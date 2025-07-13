@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 598555675344.dkr.ecr.ap-south-1.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t devsecops-app .
+      - docker tag devsecops-app:latest 598555675344.dkr.ecr.ap-south-1.amazonaws.com/devsecops-app:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push 598555675344.dkr.ecr.ap-south-1.amazonaws.com/devsecops-app:latest
+
+artifacts:
+  files: '**/*'
