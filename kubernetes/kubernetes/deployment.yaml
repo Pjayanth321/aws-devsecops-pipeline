@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsecops-deployment
+  namespace: devsecops-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devsecops
+  template:
+    metadata:
+      labels:
+        app: devsecops
+    spec:
+      containers:
+        - name: devsecops-container
+          image: 598555675344.dkr.ecr.ap-south-1.amazonaws.com/devsecops-app:latest
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred
